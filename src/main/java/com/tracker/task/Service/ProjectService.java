@@ -1,13 +1,15 @@
-package com.tracker.task.Service;
+package com.tracker.task.service;
 
+
+import com.tracker.task.entity.Project;
+import com.tracker.task.model.ProjectRequestModel;
+import com.tracker.task.repository.ProjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.tracker.task.Entity.Project;
-import com.tracker.task.Repository.ProjectRepository;
 
 @Service
 public class ProjectService {
@@ -15,14 +17,33 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectrepository;
 
-       public Project createProject(Project project) {
-        List<Project> userProjects = projectrepository.findByProjectId(project.getUser().getId());
-        if (userProjects.size() >= 4) throw new RuntimeException("Maximum 4 projects allowed per user");
-        return projectrepository.save(project);
+    @Autowired
+    private UserService userService;
+
+    @Transactional
+    public ProjectRequestModel createProject(ProjectRequestModel project) {
+        List<Project> userProjects = projectrepository.findByUser(1111L);
+        if (userProjects.size() >= 4) {
+            throw new RuntimeException("Maximum 4 projects allowed per user");
+        }
+         projectrepository.save(mapToProjectEntity(project, 1111L));
+        return project;
     }
 
-    public List<Project> getProjectsByUser(Long Id) {
-        return projectrepository.findByProjectId(Id);
+    private Project mapToProjectEntity(ProjectRequestModel project, Long userId) {
+        Project projectEntity = new Project();
+        projectEntity.setTitle(project.getTitle());
+        projectEntity.setUser(userService.findById(userId));
+        return projectEntity;
     }
-    
+
+    @Transactional
+    public ResponseEntity<List<Project>> getProjectsByUser(Long userId) {
+        return ResponseEntity.ok(projectrepository.findByUser(userId));
+    }
+
+    @Transactional
+    public Project findProjectById(Long projectId) {
+        return projectrepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
+    }
 }

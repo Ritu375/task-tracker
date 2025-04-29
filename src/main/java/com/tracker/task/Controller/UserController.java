@@ -1,7 +1,7 @@
-package com.tracker.task.Controller;
+package com.tracker.task.controller;
 
-import java.util.List;
-
+import com.tracker.task.model.UserRequestModel;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,21 +11,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tracker.task.Entity.User;
-import com.tracker.task.Service.UserService;
+import com.tracker.task.entity.User;
+import com.tracker.task.service.UserService;
 
 @RestController
 public class UserController {
      @Autowired
      private  UserService userService;
 
-    @PostMapping("/user")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-    
+    @PostMapping("/user/signup")
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequestModel user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.createUser(user));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/all")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(this.userService.getAllUsers());
     }

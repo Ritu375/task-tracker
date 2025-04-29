@@ -1,8 +1,9 @@
-package com.tracker.task.Entity;
+package com.tracker.task.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,13 +22,14 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
     private String title;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonManagedReference
     private User user;
 
     @OneToMany(mappedBy = "project")
+    @JsonManagedReference
     private List<Task> tasks = new ArrayList<>();
 }

@@ -1,7 +1,10 @@
-package com.tracker.task.Entity;
+package com.tracker.task.entity;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.tracker.task.constant.TaskStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,19 +21,19 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String title;
 
     private String description;
 
     private String status;
 
-    private LocalDate createdDate;
+    private Timestamp createdDate;
 
-    private LocalDate completionDate;
+    private Timestamp completionDate;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonBackReference
     private Project project; 
     
 }

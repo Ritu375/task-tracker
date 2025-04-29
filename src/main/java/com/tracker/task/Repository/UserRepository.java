@@ -1,8 +1,8 @@
-package com.tracker.task.Repository;
+package com.tracker.task.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tracker.task.Entity.User;
+import com.tracker.task.entity.User;
 
 public interface UserRepository extends JpaRepository<User,Long>{
     

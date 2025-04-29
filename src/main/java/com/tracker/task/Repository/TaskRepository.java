@@ -1,13 +1,8 @@
-package com.tracker.task.Repository;
+package com.tracker.task.repository;
 
-import java.util.List;
-
+import com.tracker.task.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tracker.task.Entity.Task;
-
 public interface TaskRepository extends JpaRepository<Task,Long> {
-
-    List<Task> findByTaskId(Long taskId);
     
 }

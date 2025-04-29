@@ -1,8 +1,9 @@
-package com.tracker.task.Entity;
+package com.tracker.task.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,6 +38,7 @@ public class User {
     private String country;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Project> projects = new ArrayList<>();
 }
 
