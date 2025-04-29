@@ -21,13 +21,12 @@ public class TaskService {
     private ProjectService projectService;
 
     @Transactional
-    public Task createTask(Long projectId, TaskRequestModel taskRequestModel) {
+    public Task createTask(Long projectId, TaskRequestModel taskRequestModel,Long userId) {
         Project project = projectService.findProjectById(projectId);
-        if (project.getUser().getId() != 1111L) {
+        if (project.getUser().getId() != userId) {
             throw new RuntimeException("You are not authorized to create a task for this project");
         }
         Task task = mapToTaskEntity(taskRequestModel);
-        task.setProject(project);
         return taskrepository.save(task);
     }
 
@@ -44,9 +43,9 @@ public class TaskService {
     }
 
     @Transactional
-    public Task updateTask(Long id, TaskRequestModel taskData) {
+    public Task updateTask(Long id, TaskRequestModel taskData,Long userId) {
         Task task = taskrepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
-        if (task.getProject().getUser().getId() != 1111L) {
+        if (task.getProject().getUser().getId() != userId) {
             throw new RuntimeException("You are not authorized to view this task");
         }
         task.setTitle(taskData.getTitle());
@@ -59,18 +58,18 @@ public class TaskService {
     }
 
     @Transactional
-    public void deleteTask(Long id) {
+    public void deleteTask(Long id,Long userId) {
         Task task = taskrepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
-        if (task.getProject().getUser().getId() != 1111L) {
+        if (task.getProject().getUser().getId() != userId) {
             throw new RuntimeException("You are not authorized to view this task");
         }
         taskrepository.deleteById(id);
     }
 
     @Transactional
-    public Task getById(Long id) {
+    public Task getById(Long id,Long userId) {
         Task task = taskrepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
-        if (task.getProject().getUser().getId() != 1111L) {
+        if (task.getProject().getUser().getId() != userId) {
             throw new RuntimeException("You are not authorized to view this task");
         }
         return task;

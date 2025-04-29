@@ -21,12 +21,12 @@ public class ProjectService {
     private UserService userService;
 
     @Transactional
-    public ProjectRequestModel createProject(ProjectRequestModel project) {
-        List<Project> userProjects = projectrepository.findByUser(1111L);
+    public ProjectRequestModel createProject(ProjectRequestModel project,Long userId) {
+        List<Project> userProjects = projectrepository.findByUser(userId);
         if (userProjects.size() >= 4) {
             throw new RuntimeException("Maximum 4 projects allowed per user");
         }
-         projectrepository.save(mapToProjectEntity(project, 1111L));
+         projectrepository.save(mapToProjectEntity(project, userId));
         return project;
     }
 
