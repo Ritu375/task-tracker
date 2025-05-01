@@ -23,7 +23,7 @@ public class TaskRequestModel {
     @NotNull
     private TaskStatus status;
 
-    @NotNull
+
     private Timestamp createdDate;
 
     private Timestamp completionDate;

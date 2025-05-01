@@ -3,6 +3,7 @@ package com.tracker.task.service;
 
 import com.tracker.task.entity.Project;
 import com.tracker.task.model.ProjectRequestModel;
+import com.tracker.task.model.ProjectResponseModel;
 import com.tracker.task.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +39,9 @@ public class ProjectService {
     }
 
     @Transactional
-    public ResponseEntity<List<Project>> getProjectsByUser(Long userId) {
-        return ResponseEntity.ok(projectrepository.findByUser(userId));
+    public ResponseEntity<List<ProjectResponseModel>> getProjectsByUser(Long userId) {
+
+        return ResponseEntity.ok(projectrepository.findByUser(userId).stream().map(p-> new ProjectResponseModel(p.getId(),p.getTitle())).toList());
     }
 
     @Transactional

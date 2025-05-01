@@ -12,11 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.tracker.task.entity.User;
 import com.tracker.task.service.UserService;
@@ -34,16 +30,19 @@ public class UserController {
 
 
     @PostMapping("/user/signup")
+    @CrossOrigin(origins="*")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserRequestModel user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.createUser(user));
     }
 
     @GetMapping("/user/all")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(this.userService.getAllUsers());
     }
 
     @PostMapping("/user/login")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         authenticatetionManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword()
